@@ -1,11 +1,19 @@
 import express from "express";
 import bodyParser from "body-parser";
 import morgan from "morgan";
+import { dirname } from "path";
+import { fileURLToPath } from "url";
+
+//Used to get absolute filepath
+const __dirname = dirname(fileURLToPath(import.meta.url));
 
 const app = express();
 const port = 3000;
 
+//Specifying the location of static files and setting view engine to ejs
 app.use(express.static("public"));
+app.set('view engine','ejs');
+
 app.use(bodyParser.urlencoded({ extended: true}));
 app.use(morgan('common'));
 
