@@ -7,8 +7,8 @@
     <link rel="stylesheet" href="/styles/main.css">
 </head>
 <body>
-    <section id="title">
-        <h1>To-Do List</h1>
+    <section id="header">
+        <%- include('partials/header.ejs') %>
     </section>
     <section id="inputs">
         <form action="/addTask" method="POST">
@@ -28,6 +28,9 @@
         <ul id="completedTasks">
             <li></li>
         </ul>
+    </section>
+    <section id="footer">
+        <%- include('partials/footer.ejs') %>
     </section>
     <script src="./javascripts/main.js"></script>
 </body>
