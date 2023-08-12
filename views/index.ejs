@@ -14,6 +14,12 @@
         <form action="/addTask" method="POST">
             <label for="taskEnter">Enter a Task: </label>
             <input type="text" id="taskInput" placeholder="task" name="task">
+            <label for="priority">Select Task Priority</label>
+            <select name="priority" id="priority">
+                <option value="low">Low</option>
+                <option value="medium">Medium</option>
+                <option value="high">High</option>
+            </select>
             <input type="submit" value="Add Task" id="addButton">
         </form>
     </section>
