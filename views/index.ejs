@@ -23,17 +23,26 @@
             <input type="submit" value="Add Task" id="addButton">
         </form>
     </section>
-    <section id="pendingTaskList">
-        <h2>Pending Tasks</h2>
-        <ul id="pendingTasks">
-            <li></li>
+    <% if (locals.numberOfItems) { %>
+        <section id="pendingTaskList">
+            <h2>Pending Tasks</h2>
+            <ul id="pendingTasks">
+                <% for (var i = 1; i <= numberOfItems; i ++) {%>
+                    <li>
+                        <input type="checkbox" name="check" id="<%=`task${i}` %>" /> 
+                        <%= taskList[`task${i}`].task %>
+                        <%= taskList[`task${i}`].priority %>
+                        
+                    </li>
+                <% } %>
         </ul>
-    </section>
+        </section>
+    <% } else { %>
+        <h2>No Pending Tasks</h2>
+    <% } %>
     <section id="completedTaskList">
         <h2>Completed Tasks</h2>
-        <ul id="completedTasks">
-            <li></li>
-        </ul>
+        <ul id="completedTasks"></ul>
     </section>
     <section id="footer">
         <%- include('partials/footer.ejs') %>

@@ -25,7 +25,7 @@ app.use(morgan('common'));
 //Serve landing page
 app.get("/", (req,res) => {
     try {
-        res.render("index.ejs");
+        res.render(`index.ejs`,{taskList : store.local.getAll(tasks), numberOfItems : count});
     } catch (error) {
         res.send({message : "Error Something went wrong"});
     }
@@ -33,9 +33,9 @@ app.get("/", (req,res) => {
 
 // Basic Function to add tasks
 app.post("/addTask", (req,res) => {
-    count++;    
+    count++;
     tasks = store.local.set(`task${count}`,req.body);
-    res.render(`index.ejs`,tasks);
+    res.redirect("/");
 });
 
 // Testing Function
@@ -49,7 +49,7 @@ app.get("/getTask",(req,res)=> {
 
 // Basic Function to remove tasks
 app.post("/removeTask",(req,res) => {
-    store.local.remove(`task${count}`);
+    store.local.remove(`task2`);
     count--;
     res.render("index.ejs");
 });
