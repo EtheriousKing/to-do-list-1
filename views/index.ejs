@@ -22,27 +22,40 @@
             </select>
             <input type="submit" value="Add Task" id="addButton">
         </form>
-    </section>
-    <% if (locals.numberOfItems) { %>
-        <section id="pendingTaskList">
-            <h2>Pending Tasks</h2>
-            <ul id="pendingTasks">
-                <% for (var i = 1; i <= numberOfItems; i ++) {%>
-                    <li>
-                        <input type="checkbox" name="check" id="<%=`task${i}` %>" /> 
-                        <%= taskList[`task${i}`].task %>
-                        <%= taskList[`task${i}`].priority %>
-                        
-                    </li>
-                <% } %>
-        </ul>
+        <% if (locals.numberOfItems >= 1) { %>
+            <section id="pendingTaskList">
+                <h2>Pending Tasks</h2>
+                <ul id="pendingTasks">
+                    <form  method="POST">
+                        <% taskList.forEach(element => { %>
+                            <li>
+                                <input type="checkbox" name="check" id="listToggle">
+                                <%= element.task %>
+                                <button formaction="/removeTask" id="removeButton" name="task" value="<%= element.task %>">Delete</button>
+                            </li>
+                        <% }) %> 
+                    </form>
+                </ul>
+            </section>
+        <% } else { %>
+            <h2>No Pending Tasks</h2>
+        <% } %>
+        <section id="completedTaskList">
+            <% if (locals.completedNumberOfItems >= 1) { %>
+             <h2>Completed Tasks</h2>
+             <ul id="completedTasks">
+                <form  method="POST">
+                    <% finishedTaskList.forEach(element => { %>
+                        <li>
+                            <input type="checkbox" name="check" id="listToggle">
+                            <%= element.task %>
+                            <button formaction="/removeTask" id="removeButton" name="task" value="<%= element.task %>">Delete</button>
+                        </li>
+                    <% }) %> 
+                </form>
+             </ul>
+            <% } %>
         </section>
-    <% } else { %>
-        <h2>No Pending Tasks</h2>
-    <% } %>
-    <section id="completedTaskList">
-        <h2>Completed Tasks</h2>
-        <ul id="completedTasks"></ul>
     </section>
     <section id="footer">
         <%- include('partials/footer.ejs') %>

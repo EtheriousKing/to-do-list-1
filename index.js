@@ -2,56 +2,53 @@ import express from "express";
 import bodyParser from "body-parser";
 import morgan from "morgan";
 import store from "store2";
-import { dirname } from "path";
-import { fileURLToPath } from "url";
-import fs from "fs";
-
-//Used to get absolute filepath
-const __dirname = dirname(fileURLToPath(import.meta.url));
 
 const app = express();
 const port = 3000;
-var count = 0;
-var tasks = Object.keys(store.local.getAll(tasks)).length ? store.local.getAll(tasks) : {};
+var pendingTasksList = [];
+var completedTasksList = [];
 
-//Specifying the location of static files and setting view engine to ejs
+//Line 12 sets the view engine to ejs
 app.use(express.static("public"));
 app.set('view engine','ejs');
-
 app.use(bodyParser.urlencoded({ extended: true}));
 app.use(morgan('common'));
 
-
 //Serve landing page
 app.get("/", (req,res) => {
-    try {
-        res.render(`index.ejs`,{taskList : store.local.getAll(tasks), numberOfItems : count});
-    } catch (error) {
-        res.send({message : "Error Something went wrong"});
-    }
+    res.render(`index.ejs`,{taskList : pendingTasksList, numberOfItems : pendingTasksList.length, finishedTaskList : completedTasksList, completedNumberOfItems : completedTasksList.length}); 
 });
 
 // Basic Function to add tasks
 app.post("/addTask", (req,res) => {
-    count++;
-    tasks = store.local.set(`task${count}`,req.body);
+    //Local storage stores data as key value pairs 
+    //In line 26 we create an object with the key pendingTasks and store a stringified array of objects in it (NOTE:- Simplified explanation because here I do not how I add objects)
+    store.local.set("pendingTasks",JSON.stringify([...JSON.parse(store.local.get("pendingTasks") || "[]"),req.body]));
+    store.local.set("completedTasks",JSON.stringify([]));
+    // Uncomment line 28 to see local storage stores data
+    console.log(store.local.getAll());
+    pendingTasksList = Array.from(JSON.parse(store.local.get("pendingTasks")));
     res.redirect("/");
-});
-
-// Testing Function
-app.get("/getTask",(req,res)=> {
-    res.send(store.local.get(`task${count}`));
-    console.log((store.local.getAll(tasks))[`task${count}`].task);
-    console.log((store.local.getAll(tasks))[`task${count}`].priority);
-    console.log(Object.keys(store.local.getAll(tasks)).length);
-    console.log(store.local.getAll(tasks));
 });
 
 // Basic Function to remove tasks
 app.post("/removeTask",(req,res) => {
-    store.local.remove(`task2`);
-    count--;
-    res.render("index.ejs");
+    pendingTasksList = Array.from(JSON.parse(store.local.get("pendingTasks")));
+    completedTasksList = Array.from(JSON.parse(store.local.get("completedTasks")));
+    pendingTasksList.forEach((element,index) => {
+        if (element.task === req.body.task){
+            pendingTasksList.splice(index,1);
+        }       
+    });
+    completedTasksList.forEach((element,index) => {
+        if (element.task === req.body.task){
+            completedTasksList.splice(index,1);
+        }       
+    });
+    store.local.set("pendingTasks",JSON.stringify(pendingTasksList));
+    store.local.set("completedTasks",JSON.stringify(completedTasksList));
+    console.log(store.local.getAll());
+    res.redirect("/");
 });
 
 app.listen (port, () => {
