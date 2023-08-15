@@ -14,45 +14,41 @@
         <form action="/addTask" method="POST">
             <label for="taskEnter">Enter a Task: </label>
             <input type="text" id="taskInput" placeholder="task" name="task">
-            <label for="priority">Select Task Priority</label>
-            <select name="priority" id="priority">
-                <option value="low">Low</option>
-                <option value="medium">Medium</option>
-                <option value="high">High</option>
-            </select>
             <input type="submit" value="Add Task" id="addButton">
         </form>
-        <% if (locals.numberOfItems >= 1) { %>
+        <% if (locals.numberOfItems > 0) { %>
             <section id="pendingTaskList">
                 <h2>Pending Tasks</h2>
                 <ul id="pendingTasks">
-                    <form  method="POST">
-                        <% taskList.forEach(element => { %>
+                    <% taskList.forEach(element => { %>
+                        <form  method="POST" action="/toggleList">
                             <li>
-                                <input type="checkbox" name="check" id="listToggle">
+                                <input type="hidden" name="task" value="<%= element.task %>" />
+                                <input type="checkbox" name="check" id="listToggle" value="false" onclick="this.form.submit()"/>
                                 <%= element.task %>
-                                <button formaction="/removeTask" id="removeButton" name="task" value="<%= element.task %>">Delete</button>
+                                <button formaction="/removeTask" id="removeButton">Delete</button>
                             </li>
-                        <% }) %> 
-                    </form>
+                        </form>
+                    <% }) %> 
                 </ul>
             </section>
         <% } else { %>
             <h2>No Pending Tasks</h2>
         <% } %>
         <section id="completedTaskList">
-            <% if (locals.completedNumberOfItems >= 1) { %>
+            <% if (locals.completedNumberOfItems > 0) { %>
              <h2>Completed Tasks</h2>
              <ul id="completedTasks">
-                <form  method="POST">
-                    <% finishedTaskList.forEach(element => { %>
+                <% finishedTaskList.forEach(element => { %>
+                    <form  method="POST" action="/toggleList">
                         <li>
-                            <input type="checkbox" name="check" id="listToggle">
+                            <input type="hidden" name="task" value="<%= element.task %>" />
+                            <input type="checkbox" name="check" id="listToggle" checked onclick="this.form.submit()"/>
                             <%= element.task %>
-                            <button formaction="/removeTask" id="removeButton" name="task" value="<%= element.task %>">Delete</button>
+                            <button formaction="/removeTask" id="removeButton">Delete</button>
                         </li>
-                    <% }) %> 
-                </form>
+                    </form>    
+                <% }) %> 
              </ul>
             <% } %>
         </section>
