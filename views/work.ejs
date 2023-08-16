@@ -11,7 +11,11 @@
         <%- include('partials/header.ejs') %>
     </section>
     <section id="inputs">
-        <%- include('partials/insert.ejs') %>
+        <form action="/addTask" method="POST">
+            <label for="taskEnter">Enter a Task: </label>
+            <input type="text" id="taskInput" placeholder="task" name="task">
+            <input type="submit" value="Add Task" id="addButton">
+        </form>
     </section>
     <section id="pendingTaskList">
         <% if (locals.numberOfItems > 0) { %>
