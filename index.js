@@ -7,6 +7,7 @@ const app = express();
 const port = 3000;
 var pendingTasksList = [];
 var completedTasksList = [];
+var date = new Date().toLocaleDateString('pt-PT');
 
 //Line 12 sets the view engine to ejs
 app.use(express.static("public"));
@@ -16,7 +17,11 @@ app.use(morgan('common'));
 
 //Serve landing page
 app.get("/", (req,res) => {
-    res.render(`index.ejs`,{taskList : pendingTasksList, numberOfItems : pendingTasksList.length, finishedTaskList : completedTasksList, completedNumberOfItems : completedTasksList.length}); 
+    res.render(`work.ejs`,{taskList : pendingTasksList, numberOfItems : pendingTasksList.length, finishedTaskList : completedTasksList, completedNumberOfItems : completedTasksList.length}); 
+});
+
+app.get("/daily",(req,res) => {
+    res.render("daily.ejs", {day: date});
 });
 
 // Basic Function to add tasks
@@ -24,11 +29,9 @@ app.post("/addTask", (req,res) => {
     //Local storage stores data as key value pairs 
     //In line 26 we create an object with the key pendingTasks and store a stringified array of objects in it (NOTE:- Simplified explanation because here I do not how I add objects)
     store.local.set("pendingTasks",JSON.stringify([...JSON.parse(store.local.get("pendingTasks") || "[]"),req.body]));
-    store.local.set("completedTasks",JSON.stringify([]));
     // Uncomment line 30 to see local storage stores data
     // console.log(store.local.getAll());
     pendingTasksList = Array.from(JSON.parse(store.local.get("pendingTasks")));
-    completedTasksList = Array.from(JSON.parse(store.local.get("completedTasks")));
     res.redirect("/");
 });
 
@@ -55,17 +58,17 @@ app.post("/removeTask",(req,res) => {
 
 // Toggle tasks between complete and incomplete
 app.post("/toggleList", (req,res) => {
-    pendingTasksList = Array.from(JSON.parse(store.local.get("pendingTasks")));
-    completedTasksList = Array.from(JSON.parse(store.local.get("completedTasks")));
     if (req.body.check === "false") {
+        pendingTasksList = Array.from(JSON.parse(store.local.get("pendingTasks")));
         pendingTasksList.forEach((element,index) => {
             if(element.task === req.body.task){
-                store.local.set("completedTasks",JSON.stringify([...JSON.parse(store.local.get("completedTasks")),pendingTasksList[index]]));
+                store.local.set("completedTasks",JSON.stringify([...JSON.parse(store.local.get("completedTasks") || "[]"),pendingTasksList[index]]));
                 pendingTasksList.splice(index,1);
                 store.local.set("pendingTasks",JSON.stringify(pendingTasksList));
             }
         })
     } else {
+        completedTasksList = Array.from(JSON.parse(store.local.get("completedTasks")));
         completedTasksList.forEach((element,index) => {
             if(element.task === req.body.task){
                 store.local.set("pendingTasks",JSON.stringify([...JSON.parse(store.local.get("pendingTasks")),completedTasksList[index]]));

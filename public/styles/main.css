@@ -1,11 +1,64 @@
 body {
-    background-color: plum;
+    margin: 0%;
+    background-color: whitesmoke;
+    display : flex;
+    flex-direction: column;
+    align-items: center;
+    height: 100vh;
+}
+
+h2 {
+    text-align: center;
+}
+
+#header {
+    width: 100%;
+    
+}
+
+#footer {
+    justify-content: flex-end;
+}
+
+#navBar {
+    text-align: end;
+    padding: 10px;
+}
+
+#navLinks {
+    padding : 0px 5px 0px 0px;
+}
+
+#completedTaskList, #pendingTaskList {
+    flex-grow: 2;
+}
+
+#pendingTasks , #completedTasks{
+    text-align: center;
 }
 
 ul {
     list-style: none;
+    padding: 0%;
+}
+
+li {
+    align-items: center;
 }
 
 h1 {
     text-align: center;
+    font-size: 3rem;
+}
+
+label {
+    padding: 5px;
+}
+
+input[type=checkbox]:checked + label.finishedTask{
+    text-decoration: line-through;
+}
+
+#fulldate {
+    padding-bottom: 5px;
 }
