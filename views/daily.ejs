@@ -12,51 +12,21 @@
         <h2 id="fullDate">Tasks for <%= day %></h2>
     </section>
     <section id="inputs">
-        <form action="/addTask" method="POST">
-            <label for="taskEnter">Enter a Task: </label>
-            <input type="text" id="taskInput" placeholder="task" name="task">
-            <input type="submit" value="Add Task" id="addButton">
-        </form>
+        <%- include('partials/insert.ejs') %>
     </section>
     <section id="pendingTaskList">
-        <% if (locals.numberOfItems > 0) { %>
             <h2>Pending Tasks</h2>
-            <ul id="pendingTasks">
-                <% taskList.forEach((element,index) => { %>
-                    <form  method="POST" action="/toggleList">
-                        <li>
-                            <input type="hidden" name="task" value="<%= element.task %>" />
-                            <input type="checkbox" name="check" class="listToggle" value="false" onclick="this.form.submit()"/>
-                            <label for="check"><%= element.task %></label>
-                            <button formaction="/removeTask" id="removeButton">Delete</button>
-                        </li>
-                    </form>
-                <% }) %> 
-            </ul>
-            <% } else { %>
-                <h2>No Pending Tasks</h2>
-            <% } %>
+            <ul id="pendingTasks"></ul>
     </section>
     <section id="completedTaskList">
-        <% if (locals.completedNumberOfItems > 0) { %>
             <h2>Completed Tasks</h2>
-            <ul id="completedTasks">
-            <% finishedTaskList.forEach((element,index) => { %>
-                <form  method="POST" action="/toggleList">
-                    <li>
-                        <input type="hidden" name="task" value="<%= element.task %>" />
-                        <input type="checkbox" name="check" class="listToggle" checked onclick="this.form.submit()"/>
-                        <label for="check" class="finishedTask"><%= element.task %></label>
-                        <button formaction="/removeTask" class="removeButton">Delete</button>
-                    </li>
-                </form>    
-            <% }) %> 
-            </ul>
-        <% } %>
+            <ul id="completedTasks"></ul>
     </section>
     <section id="footer">
         <%- include('partials/footer.ejs') %>
     </section>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.0/jquery.min.js"></script>
+    <script src="./javascripts/daily.js"></script>
     <script src="./javascripts/main.js"></script>
 </body>
 </html>

@@ -1,14 +1,16 @@
-const enterTask = document.getElementById("taskInput");
-const addButton = document.getElementById("addButton");
+const addButton = $("#addButton")
+const task = $("#taskInput");
 
-addButton.disabled = true;
+addButton.prop('disabled',true);
 
-enterTask.addEventListener("change" , toggleButton);
+task.on("change" , () => {
+    toggleButton();
+});
 
 function toggleButton () {
-    if (enterTask.value.trim() === "") {
-        addButton.disabled = true;
+    if ($.trim(task.val()) === "") {
+        addButton.prop('disabled',true);
     } else {
-        addButton.disabled = false;
+        addButton.prop('disabled',false);
     }
 }
