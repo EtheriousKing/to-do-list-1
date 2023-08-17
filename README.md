@@ -3,6 +3,6 @@ A To-Do List Web-Application created using EJS, jQuery, Node.js, and Express. Th
 
 ## Installation
 1. Clone this Repository
-2. Extract the cloned repository and novigate to it.
+2. Extract the cloned repository and navigate to it.
 3. Run `npm install`
 4. Run `node index.js`
