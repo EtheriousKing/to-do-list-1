@@ -6,3 +6,4 @@ A To-Do List Web-Application created using EJS, jQuery, Node.js, and Express. Th
 2. Extract the cloned repository and navigate to it.
 3. Run `npm install`
 4. Run `node index.js`
+5. Open your browser and navigate to `http://localhost:3000/`

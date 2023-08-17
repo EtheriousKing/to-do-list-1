@@ -61,7 +61,7 @@ input[type=checkbox]:checked + label.finishedTask{
 
 .completed {
     text-decoration: line-through;
-    background-color: greenyellow;
+    background-color: gray;
 }
 
 #fulldate {
